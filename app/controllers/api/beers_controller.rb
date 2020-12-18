@@ -1,4 +1,6 @@
 class Api::BeersController < ApplicationController
+  before_action :authenticate_user, except: [:index, :show]
+
   def index
     @beers = Beer.all
     render "index.json.jb"
@@ -16,7 +18,12 @@ class Api::BeersController < ApplicationController
       style: params[:style],
       description: params[:description],
     )
-    render "show.json.jb"
+
+    if @beer.save
+      render "show.json.jb"
+    else
+      render json: { errors: @beer.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -26,7 +33,12 @@ class Api::BeersController < ApplicationController
     @beer.style = params[:style] || @beer.style
     @beer.description = params[:description] || @beer.description
     @beer.save
-    render "show.json.jb"
+
+    if @beer.save
+      render "show.json.jb"
+    else
+      render json: { errors: @beer.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy

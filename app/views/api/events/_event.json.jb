@@ -1,7 +1,12 @@
 {
   id: event.id,
   name: event.name,
+  hosted_by: event.user.username,
+  user_id: event.user_id,
   location: event.location,
   date: event.date,
+  beer: event.beer.name,
+  brewery: event.beer.brewery,
+  beer_description: event.beer.description,
 
 }
