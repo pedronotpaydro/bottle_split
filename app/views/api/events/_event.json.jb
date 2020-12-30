@@ -4,9 +4,10 @@
   hosted_by: event.user.username,
   user_id: event.user_id,
   location: event.location,
-  date: event.date,
+  date: event.date.strftime("%A, %d %b %Y %l:%M %p"),
   beer: event.beer.name,
   brewery: event.beer.brewery,
   beer_description: event.beer.description,
+  beer_id: event.beer.id,
 
 }

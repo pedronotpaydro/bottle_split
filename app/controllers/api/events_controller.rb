@@ -2,7 +2,15 @@ class Api::EventsController < ApplicationController
   before_action :authenticate_user, except: [:index, :show]
 
   def index
-    @events = Event.all.order(:date).limit(5)
+    @events = Event.all.order("date ASC")
+    if params[:active] == "live"
+      @events = Event.all
+      @events.map { |event| event.active? }
+      @events = Event.where(active: true).order("date ASC").limit(5)
+    end
+    # if params[:my_events] == "this_user"
+    #   @events = Event.where(user_id: current_user)
+    # end
     render "index.json.jb"
   end
 
@@ -12,6 +20,12 @@ class Api::EventsController < ApplicationController
   end
 
   def create
+    # @beer = Beer.create(
+    #   name: params[:name],
+    #   brewery: params[:brewery],
+    #   style: params[:style],
+    #   description: params[:description],
+    # ),
     @event = Event.new(
       name: params[:name],
       location: params[:location],
@@ -32,6 +46,7 @@ class Api::EventsController < ApplicationController
     @event.name = params[:name] || @event.name
     @event.location = params[:location] || @event.location
     @event.date = params[:date] || @event.date
+    # @event.active?
 
     @event.save
     if @event.save
