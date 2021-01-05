@@ -7,6 +7,8 @@ class Api::EventsController < ApplicationController
       @events = Event.all
       @events.map { |event| event.active? }
       @events = Event.where(active: true).order("date ASC").limit(5)
+    elsif params[:my_events] == "this_user"
+      @events = Event.where(user_id: current_user)
     end
     # if params[:my_events] == "this_user"
     #   @events = Event.where(user_id: current_user)
