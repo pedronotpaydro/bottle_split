@@ -6,7 +6,7 @@ class Api::EventsController < ApplicationController
     if params[:active] == "live"
       @events = Event.all
       @events.map { |event| event.active? }
-      @events = Event.where(active: true).order("date ASC").limit(5)
+      @events = Event.where(active: true).order("date ASC").limit(4)
     elsif params[:my_events] == "this_user"
       @events = Event.where(user_id: current_user)
     end
@@ -48,6 +48,8 @@ class Api::EventsController < ApplicationController
     @event.name = params[:name] || @event.name
     @event.location = params[:location] || @event.location
     @event.date = params[:date] || @event.date
+    @event.beer = params[:beer] || @event.beer
+    @event.beer.description = params[:beer_description] || @event.beer.description
     # @event.active?
 
     @event.save
