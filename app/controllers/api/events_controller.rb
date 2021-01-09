@@ -22,12 +22,6 @@ class Api::EventsController < ApplicationController
   end
 
   def create
-    # @beer = Beer.create(
-    #   name: params[:name],
-    #   brewery: params[:brewery],
-    #   style: params[:style],
-    #   description: params[:description],
-    # ),
     @event = Event.new(
       name: params[:name],
       location: params[:location],
@@ -50,7 +44,6 @@ class Api::EventsController < ApplicationController
     @event.date = params[:date] || @event.date
     @event.beer = params[:beer] || @event.beer
     @event.beer.description = params[:beer_description] || @event.beer.description
-    # @event.active?
 
     @event.save
     if @event.save

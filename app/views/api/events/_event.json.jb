@@ -9,5 +9,6 @@
   brewery: event.beer.brewery,
   beer_description: event.beer.description,
   beer_id: event.beer.id,
+  beer_image: event.beer.image,
 
 }
