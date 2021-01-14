@@ -7,8 +7,10 @@
   date: event.date.strftime("%A, %d %b %Y %l:%M %p"),
   beer: event.beer.name,
   brewery: event.beer.brewery,
+  style: event.beer.style,
   beer_description: event.beer.description,
   beer_id: event.beer.id,
   beer_image: event.beer.image,
+  ago: time_ago_in_words(event.updated_at),
 
 }
