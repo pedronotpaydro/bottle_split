@@ -4,6 +4,6 @@
   brewery: beer.brewery,
   style: beer.style,
   description: beer.description,
-  message: "Oh hi"
+  
 
 }
