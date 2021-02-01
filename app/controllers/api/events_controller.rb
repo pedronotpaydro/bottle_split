@@ -2,28 +2,30 @@ class Api::EventsController < ApplicationController
   before_action :authenticate_user, except: [:index, :show]
 
   def index
-    @events = Event.all.order("date ASC")
+    # @events = Event.all.order("date ASC")
     if params[:active] == "live"
-      @events = Event.all
-      @events.map { |event|
-        # event.active?
-        if event.beer.image.nil? && event.beer.style.downcase == "stout"
-          event.beer.image = "https://beerconnoisseur.com/sites/default/files/articles/2020/the_difference_between_porter_and_stout/porter_and_stout.jpg"
-          event.beer.save
-        elsif event.beer.image.nil? && event.beer.style.downcase == "ipa"
-          event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
-          event.beer.save
-        elsif event.beer.image.nil? && event.beer.style.downcase == "neipa"
-          event.beer.image = "https://brew4fun.files.wordpress.com/2019/03/dsc_5449-1.jpg"
-          event.beer.save
-        elsif event.beer.image.nil? && event.beer.style.downcase == "sour"
-          event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
-          event.beer.save
-        end
-      }
+      # @events = Event.all
+      # @events.map { |event|
+      #   # event.active?
+      #   if event.beer.image.nil? && event.beer.style.downcase == "stout"
+      #     event.beer.image = "https://beerconnoisseur.com/sites/default/files/articles/2020/the_difference_between_porter_and_stout/porter_and_stout.jpg"
+      #     event.beer.save
+      #   elsif event.beer.image.nil? && event.beer.style.downcase == "ipa"
+      #     event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
+      #     event.beer.save
+      #   elsif event.beer.image.nil? && event.beer.style.downcase == "neipa"
+      #     event.beer.image = "https://brew4fun.files.wordpress.com/2019/03/dsc_5449-1.jpg"
+      #     event.beer.save
+      #   elsif event.beer.image.nil? && event.beer.style.downcase == "sour"
+      #     event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
+      #     event.beer.save
+      #   end
+      # }
       @events = Event.where(date: Time.now..1.month.from_now).order("date ASC").limit(4)
     elsif params[:my_events] == "this_user"
       @events = Event.where(user_id: current_user)
+    else
+      @events = Event.all.order("date ASC")
     end
 
     render "index.json.jb"
@@ -44,6 +46,19 @@ class Api::EventsController < ApplicationController
     )
 
     if @event.save
+      if @event.beer.image.nil? && @event.beer.style.downcase == "stout"
+        @event.beer.image = "https://beerconnoisseur.com/sites/default/files/articles/2020/the_difference_between_porter_and_stout/porter_and_stout.jpg"
+        @event.beer.save
+      elsif @event.beer.image.nil? && @event.beer.style.downcase == "ipa"
+        @event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
+        @event.beer.save
+      elsif @event.beer.image.nil? && @event.beer.style.downcase == "neipa"
+        @event.beer.image = "https://brew4fun.files.wordpress.com/2019/03/dsc_5449-1.jpg"
+        @event.beer.save
+      elsif @event.beer.image.nil? && @event.beer.style.downcase == "sour"
+        @event.beer.image = "https://content.kegworks.com/hs-fs/hubfs/Imported_Blog_Media/kegworks-guide-to-ipas-1-1200x800-2.jpg?width=1200&height=800&name=kegworks-guide-to-ipas-1-1200x800-2.jpg"
+        @event.beer.save
+      end
       render "show.json.jb"
     else
       render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
